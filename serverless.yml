@@ -1,0 +1,42 @@
+frameworkVersion: '2'
+
+service: veganrecipes-datasource
+
+app: veganrecipes-api
+org: avjpldeveloper
+
+custom:
+  webpack:
+    webpackConfig: webpack.config.js
+    includeModules: true
+    packager: 'yarn'
+    excludeFiles: src/**/*.test.js
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: eu-west-2
+  apiGateway:
+    shouldStartNameWithService: true
+
+package:
+  individually: true
+
+functions:
+  first:
+    handler: src/functions/first.welcome
+    events:
+      - http:
+          method: get
+          path: first
+  second:
+    handler: src/functions/second.welcome
+    events:
+      - http:
+          method: get
+          path: second
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
